@@ -1,0 +1,18 @@
+{
+  "name": "budget-calculator",
+  "version": "1.0.0",
+  "description": "",
+  "bin": "index.js",
+  "main": "index.js",
+  "scripts": {
+    "test": "node index.js",
+    "build": "pkg index.js --output build/budget-calculator.exe --targets node16-win-x64"
+  },
+  "keywords": [],
+  "author": "Melvin DOUCET",
+  "license": "ISC",
+  "pkg": {
+    "scripts": "utils/*.js",
+    "targets": "node16-win-x64"
+  }
+}
