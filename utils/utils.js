@@ -1,10 +1,10 @@
-var { brightMagenta, green, red, yellow } = require("./colors");
-var { dateTranslation, monthDay, monthLength, nextMonthLength } = require("./date");
+const { brightMagenta, green, red, yellow } = require("./colors");
+const { dateTranslation, monthDay, monthLength, nextMonthLength, year } = require("./date");
 
 function getPromise(rl, { query, convertFunction, getError }) {
-  return new Promise(function (resolve, reject) {
-    rl.question(`${green(query)} `, function (input) {
-      var error = getError(input);
+  return new Promise((resolve, reject) => {
+    rl.question(`${green(query)} `, (input) => {
+      const error = getError(input);
       return (error === null)
         ? resolve(convertFunction(input))
         : reject(error);
@@ -12,21 +12,20 @@ function getPromise(rl, { query, convertFunction, getError }) {
   });
 }
 
-function ask(readlineInterface, { query, convertFunction, getError }) {
-  return getPromise(readlineInterface, { query, convertFunction, getError })
-    .then(function (val) {
-      return val;
-    })
-    .catch(function (error) {
-      console.log(`${error}\n`);
-      return ask(readlineInterface, { query, convertFunction, getError });
-    });
+async function ask(readlineInterface, { query, convertFunction, getError }) {
+  try {
+    const val = await getPromise(readlineInterface, { query, convertFunction, getError });
+    return val;
+  } catch (error) {
+    console.log(`${error}\n`);
+    return ask(readlineInterface, { query, convertFunction, getError });
+  }
 }
 
 function getFundsError(input) {
   if (!input)
     return red(`Valeur requise.`);
-  var funds = parseFloat(input.trim());
+  const funds = parseFloat(input.trim());
   if (isNaN(funds))
     return `Valeur invalide : ${red(input.trim())}.`;
   if (funds > Number.MAX_SAFE_INTEGER)
@@ -37,7 +36,7 @@ function getFundsError(input) {
 function getIncomeDayError(input) {
   if (!input)
     return red(`Valeur requise.`);
-  var day = parseInt(input);
+  const day = parseInt(input);
   if (isNaN(day))
     return `Valeur invalide : ${red(input.trim())}.`;
   if (day < 1)
@@ -48,14 +47,14 @@ function getIncomeDayError(input) {
 }
 
 function printDate() {
-  console.log(`Nous sommes le ${yellow(dateTranslation)}. Il y a ${yellow(monthLength)} jours ce mois-ci.\n`);
+  console.log(`Nous sommes le ${yellow(dateTranslation)} ${year}. Il y a ${yellow(monthLength)} jours ce mois-ci.\n`);
 }
 
 function displayBudget(funds, nextIncomeDay) {
-  var budget = funds / (monthLength - monthDay + nextIncomeDay);
+  const budget = funds / (monthLength - monthDay + nextIncomeDay);
   console.log(`\n          ${brightMagenta(budget.toFixed(2))}\n`);
   console.log("N'importe quelle touche pour quitter...");
-  process.stdin.on("keypress", function (_e) {
+  process.stdin.on("keypress", (_e) => {
     process.exit();
   });
 }

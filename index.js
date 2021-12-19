@@ -1,17 +1,17 @@
-var { createInterface } = require("readline");
-var { ask, getFundsError, getIncomeDayError, printDate, displayBudget } = require("./utils/utils");
+const { createInterface } = require("readline");
+const { ask, getFundsError, getIncomeDayError, printDate, displayBudget } = require("./utils/utils");
 
-(function main() {
-  var rl = createInterface({
+(async () => {
+  const rl = createInterface({
     input: process.stdin,
     output: process.stdout
   });
-  var fundsParams = {
+  const fundsParams = {
     query: "Fonds disponibles ?",
     convertFunction: Number.parseFloat,
     getError: getFundsError
   };
-  var nextIncomeDayParams = {
+  const nextIncomeDayParams = {
     query: "Jour du prochain revenu ?",
     convertFunction: Number.parseInt,
     getError: getIncomeDayError
@@ -19,11 +19,7 @@ var { ask, getFundsError, getIncomeDayError, printDate, displayBudget } = requir
 
   printDate();
 
-  ask(rl, fundsParams)
-    .then(function (funds) {
-      ask(rl, nextIncomeDayParams)
-        .then(function (nextIncomeDay) {
-          displayBudget(funds, nextIncomeDay);
-        });
-    });
+  const funds = await ask(rl, fundsParams);
+  const nextIncomeDay = await ask(rl, nextIncomeDayParams);
+  displayBudget(funds, nextIncomeDay);
 })();

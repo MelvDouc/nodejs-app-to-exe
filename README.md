@@ -6,7 +6,7 @@ npm i -g pkg
 ```
 
 ## Syntax
-Project must be written using **pre-ES6 syntax**. Anything more recent will likely cause compilation to fail.
+Some of the more modern syntax features such as ES6 modules might not work.
 
 ## package.json
 ```json5
