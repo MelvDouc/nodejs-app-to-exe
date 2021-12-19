@@ -3,7 +3,7 @@ var { ask, getFundsError, getIncomeDayError } = require("./utils/utils");
 var { dateTranslation, monthDay, monthLength } = require("./utils/date");
 var { brightMagenta, yellow } = require("./utils/colors");
 
-function main() {
+(function main() {
   var rl = createInterface({
     input: process.stdin,
     output: process.stdout
@@ -15,12 +15,12 @@ function main() {
     query: "Fonds disponibles ?",
     convertFunction: Number.parseFloat,
     getError: getFundsError
-  }).then(funds => {
+  }).then(function (funds) {
     ask(rl, {
       query: "Jour du prochain revenu ?",
       convertFunction: Number.parseInt,
       getError: getIncomeDayError,
-    }).then(nextIncomeDay => {
+    }).then(function (nextIncomeDay) {
       var budget = (funds / (monthLength - monthDay + nextIncomeDay)).toFixed(2);
       console.log(`\n${brightMagenta(budget)}\n`);
       console.log("N'importe quelle touche pour quitter...");
@@ -29,6 +29,4 @@ function main() {
       });
     });
   });
-}
-
-main();
+})();
