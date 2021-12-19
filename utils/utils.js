@@ -2,8 +2,8 @@ var { green, red } = require("./colors");
 var { nextMonthLength } = require("./date");
 
 function getPromise(rl, { query, convertFunction, getError }) {
-  return new Promise((resolve, reject) => {
-    rl.question(`${green(query)} `, (input) => {
+  return new Promise(function (resolve, reject) {
+    rl.question(`${green(query)} `, function (input) {
       var error = getError(input);
       return (error === null)
         ? resolve(convertFunction(input))
@@ -12,14 +12,14 @@ function getPromise(rl, { query, convertFunction, getError }) {
   });
 }
 
-function ask(rl, { query, convertFunction, getError }) {
-  return getPromise(rl, { query, convertFunction, getError })
-    .then(val => {
+function ask(readlineInterface, { query, convertFunction, getError }) {
+  return getPromise(readlineInterface, { query, convertFunction, getError })
+    .then(function (val) {
       return val;
     })
-    .catch(error => {
+    .catch(function (error) {
       console.log(`${error}\n`);
-      return ask(rl, { query, convertFunction, getError });
+      return ask(readlineInterface, { query, convertFunction, getError });
     });
 };
 
