@@ -7,14 +7,14 @@ const Color = Object.freeze({
   YELLOW: "\u001B[33m"
 });
 
-function color(color) {
+function colorize(color) {
   return (output) => color + String(output) + Color.RESET;
 }
 
-const brightMagenta = color(Color.BRIGHT + Color.MAGENTA);
-const green = color(Color.GREEN);
-const red = color(Color.RED);
-const yellow = color(Color.YELLOW);
+const brightMagenta = colorize(Color.BRIGHT + Color.MAGENTA);
+const green = colorize(Color.GREEN);
+const red = colorize(Color.RED);
+const yellow = colorize(Color.YELLOW);
 
 module.exports.brightMagenta = brightMagenta;
 module.exports.green = green;
