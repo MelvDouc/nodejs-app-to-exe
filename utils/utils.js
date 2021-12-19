@@ -1,5 +1,5 @@
-var { green, red } = require("./colors");
-var { nextMonthLength } = require("./date");
+var { brightMagenta, green, red, yellow } = require("./colors");
+var { dateTranslation, monthDay, monthLength, nextMonthLength } = require("./date");
 
 function getPromise(rl, { query, convertFunction, getError }) {
   return new Promise(function (resolve, reject) {
@@ -21,7 +21,7 @@ function ask(readlineInterface, { query, convertFunction, getError }) {
       console.log(`${error}\n`);
       return ask(readlineInterface, { query, convertFunction, getError });
     });
-};
+}
 
 function getFundsError(input) {
   if (!input)
@@ -32,7 +32,7 @@ function getFundsError(input) {
   if (funds > Number.MAX_SAFE_INTEGER)
     return red("Valeur trop élevée.");
   return null;
-};
+}
 
 function getIncomeDayError(input) {
   if (!input)
@@ -45,8 +45,23 @@ function getIncomeDayError(input) {
   if (day > nextMonthLength)
     return `Il n'y a que ${red(nextMonthLength)} jours le mois prochain.`;
   return null;
-};
+}
+
+function printDate() {
+  console.log(`Nous sommes le ${yellow(dateTranslation)}. Il y a ${yellow(monthLength)} jours ce mois-ci.\n`);
+}
+
+function displayBudget(funds, nextIncomeDay) {
+  var budget = funds / (monthLength - monthDay + nextIncomeDay);
+  console.log(`\n          ${brightMagenta(budget.toFixed(2))}\n`);
+  console.log("N'importe quelle touche pour quitter...");
+  process.stdin.on("keypress", function (_e) {
+    process.exit();
+  });
+}
 
 module.exports.ask = ask;
 module.exports.getFundsError = getFundsError;
 module.exports.getIncomeDayError = getIncomeDayError;
+module.exports.printDate = printDate;
+module.exports.displayBudget = displayBudget;
