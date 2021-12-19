@@ -9,7 +9,7 @@ npm i -g pkg
 Project must be written using **pre-ES6 syntax**. Anything more recent will likely cause compilation to fail.
 
 ## package.json
-```json
+```json5
 "bin": "index.js", // main file
 "scripts": {
   "test": "node index.js",
